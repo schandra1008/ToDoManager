@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import saveToDo from "@salesforce/apex/ToDoController.saveToDo";
-import {ShowToastEvent} from 'lightning/platformShowToastEvent'
+import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 
 export default class CreateTask extends LightningElement {
     @api targetParent;
@@ -46,6 +46,14 @@ export default class CreateTask extends LightningElement {
                     variant : "success"
                 });
                 this.dispatchEvent(evt);
+                this.dispatchEvent(new CustomEvent("refreshtodo"));
+                if(this.targetParent === true){
+                    const selectedEvent = new CustomEvent("closeaction",
+                    {
+                        detail : result
+                    });
+                    this.dispatchEvent(selectedEvent)
+                }
             }
         })
         .catch((error)=>{
